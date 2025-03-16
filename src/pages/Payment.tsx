@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -12,31 +12,70 @@ import { CheckCircle } from "lucide-react";
 const PaymentPage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [paymentComplete, setPaymentComplete] = useState(false);
+  
+  // Get the amount from location state or default to 249 (student registration)
+  const amount = location.state?.amount || 249;
+  const formattedAmount = `₹${amount.toLocaleString('en-IN')}.00`;
 
   useEffect(() => {
     // Simulate loading the payment gateway
     const timer = setTimeout(() => {
       setLoading(false);
       
-      // Simulate Razorpay initialization
+      // Load Razorpay script
       const script = document.createElement('script');
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.async = true;
       document.body.appendChild(script);
       
-      // In a real implementation, you would initialize Razorpay here
-      // For this demo, we'll just show a mock interface
+      return () => {
+        document.body.removeChild(script);
+      };
     }, 1500);
     
     return () => clearTimeout(timer);
   }, []);
 
-  const handlePayNow = () => {
+  const displayRazorpay = () => {
     // Simulate payment processing
     setLoading(true);
     
+    // In a real implementation, you would get the order_id from your backend
+    const options = {
+      key: "rzp_test_YourTestKey", // Replace with actual test key in production
+      amount: amount * 100, // Razorpay takes amount in paise
+      currency: "INR",
+      name: "Digi Sanchaar",
+      description: "Payment for services",
+      image: "/placeholder.svg",
+      order_id: "order_" + Math.random().toString(36).substring(2, 15),
+      handler: function (response) {
+        // Handle successful payment
+        setLoading(false);
+        setPaymentComplete(true);
+        
+        toast({
+          title: "Payment successful!",
+          description: "Your transaction has been completed successfully.",
+        });
+        
+        // In a real implementation, you would verify the payment signature on your backend
+        console.log("Payment successful", response);
+      },
+      prefill: {
+        name: "User Name",
+        email: "user@example.com",
+        contact: "9876543210"
+      },
+      theme: {
+        color: "#3B82F6"
+      }
+    };
+    
+    // For demo purposes, we're simulating the payment completion
     setTimeout(() => {
       setLoading(false);
       setPaymentComplete(true);
@@ -46,6 +85,14 @@ const PaymentPage = () => {
         description: "Your transaction has been completed successfully.",
       });
     }, 2000);
+    
+    // In actual implementation, you would do:
+    // const razorpay = new window.Razorpay(options);
+    // razorpay.open();
+  };
+
+  const handlePayNow = () => {
+    displayRazorpay();
   };
 
   const handleContinue = () => {
@@ -80,7 +127,7 @@ const PaymentPage = () => {
                 <CardContent className="text-center">
                   <div className="space-y-2 mb-4">
                     <p className="text-sm text-gray-500">Transaction ID: RZPY12345678</p>
-                    <p className="text-sm text-gray-500">Amount: ₹4,799.00</p>
+                    <p className="text-sm text-gray-500">Amount: {formattedAmount}</p>
                     <p className="text-sm text-gray-500">Date: {new Date().toLocaleString()}</p>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
@@ -106,7 +153,7 @@ const PaymentPage = () => {
                   <div className="space-y-4">
                     <div className="bg-gray-50 p-4 rounded-md">
                       <p className="text-sm font-medium mb-1">Amount to Pay</p>
-                      <p className="text-2xl font-bold">₹4,799.00</p>
+                      <p className="text-2xl font-bold">{formattedAmount}</p>
                     </div>
                     
                     <div className="space-y-2">

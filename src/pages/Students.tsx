@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -23,9 +22,9 @@ const Students = () => {
       description: "We'll redirect you to the payment page.",
     });
     
-    // Navigate to payment page after 1.5 seconds
+    // Navigate to payment page after 1.5 seconds and pass the registration amount
     setTimeout(() => {
-      navigate("/payment");
+      navigate("/payment", { state: { amount: 249 } });
     }, 1500);
   };
 
