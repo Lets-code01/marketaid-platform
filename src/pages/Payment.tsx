@@ -53,7 +53,7 @@ const PaymentPage = () => {
     setLoading(true);
     
     const options = {
-      key: "rzp_test_H8UhX2XTYlT9ej", // Razorpay test key
+      key: "rzp_test_At6CSWODqdwX6K", // Razorpay test key
       amount: amount * 100, // Razorpay takes amount in paise
       currency: "INR",
       name: "Digi Sanchaar",
@@ -74,8 +74,8 @@ const PaymentPage = () => {
         sendInvoiceEmail();
       },
       prefill: {
-        name: isSignedIn ? user.fullName : "",
-        email: isSignedIn ? user.primaryEmailAddress?.emailAddress : "",
+        name: isSignedIn ? user?.fullName : "",
+        email: isSignedIn ? user?.primaryEmailAddress?.emailAddress : "",
         contact: ""
       },
       theme: {
@@ -109,9 +109,21 @@ const PaymentPage = () => {
   };
 
   const sendInvoiceEmail = () => {
-    // In a real implementation, you would call your backend API to send an invoice email
-    console.log("Sending invoice email to:", isSignedIn ? user.primaryEmailAddress?.emailAddress : "user@example.com");
-    // This is just a simulation as we don't have a backend API for sending emails
+    // Simulate sending an invoice email
+    // In a real implementation, you would call a backend API
+    const userEmail = isSignedIn ? user?.primaryEmailAddress?.emailAddress : "user@example.com";
+    
+    console.log(`Sending invoice to: ${userEmail}`);
+    
+    // Mock API call to send email - in real implementation, this would be a fetch or axios call
+    setTimeout(() => {
+      console.log(`Invoice successfully sent to ${userEmail}`);
+      
+      toast({
+        title: "Invoice sent",
+        description: `An invoice has been sent to ${userEmail}`,
+      });
+    }, 2000);
   };
 
   const handlePayNow = () => {

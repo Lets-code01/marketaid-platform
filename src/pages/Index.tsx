@@ -40,10 +40,9 @@ const Home = () => {
               </div>
               <div className="md:w-1/2 animate-fade-in">
                 <img 
-                  src="/placeholder.svg" 
+                  src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
                   alt="Digital Marketing" 
-                  className="rounded-lg shadow-xl"
-                  style={{ maxWidth: "100%", height: "auto" }}
+                  className="rounded-lg shadow-xl w-full h-auto object-cover"
                 />
               </div>
             </div>
@@ -70,6 +69,13 @@ const Home = () => {
                 <p className="text-gray-600 mb-4">
                   Boost your online reputation with authentic reviews across Google Maps, JustDial, Practo, Amazon, and Play Store.
                 </p>
+                <div className="mb-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6" 
+                    alt="Review Management" 
+                    className="w-full h-40 object-cover rounded-md"
+                  />
+                </div>
                 <Link to="/services/reviews" className="text-brand-blue hover:text-blue-700 inline-flex items-center">
                   Learn More <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
@@ -84,6 +90,13 @@ const Home = () => {
                 <p className="text-gray-600 mb-4">
                   Improve your search engine rankings with our comprehensive SEO strategies tailored to your business needs.
                 </p>
+                <div className="mb-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1518770660439-4636190af475" 
+                    alt="SEO Optimization" 
+                    className="w-full h-40 object-cover rounded-md"
+                  />
+                </div>
                 <Link to="/services/seo-optimization" className="text-brand-purple hover:text-purple-700 inline-flex items-center">
                   Learn More <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
@@ -98,6 +111,13 @@ const Home = () => {
                 <p className="text-gray-600 mb-4">
                   Engage with your audience and build brand loyalty through effective social media campaigns and content.
                 </p>
+                <div className="mb-4">
+                  <img 
+                    src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
+                    alt="Social Media Marketing" 
+                    className="w-full h-40 object-cover rounded-md"
+                  />
+                </div>
                 <Link to="/services/social-media-marketing" className="text-brand-pink hover:text-pink-700 inline-flex items-center">
                   Learn More <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>

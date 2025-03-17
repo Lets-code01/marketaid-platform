@@ -43,7 +43,7 @@ const Clients = () => {
       price: 40,
       priceUnit: "per review",
       minQuantity: 10,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
       features: ["Verified accounts", "Detailed reviews", "Fast delivery", "100% satisfaction"],
       category: "review"
     },
@@ -54,7 +54,7 @@ const Clients = () => {
       price: 40,
       priceUnit: "per review",
       minQuantity: 10,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
       features: ["5-star ratings", "Custom review text", "Profile optimization"],
       category: "review"
     },
@@ -65,7 +65,7 @@ const Clients = () => {
       price: 40,
       priceUnit: "per review",
       minQuantity: 10,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
       features: ["Healthcare focused", "Patient testimonials", "Medical expertise"],
       category: "review"
     },
@@ -76,7 +76,7 @@ const Clients = () => {
       price: 40,
       priceUnit: "per review",
       minQuantity: 10,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
       features: ["Verified purchases", "Product images", "Detailed feedback"],
       category: "review"
     },
@@ -87,7 +87,7 @@ const Clients = () => {
       price: 40,
       priceUnit: "per review",
       minQuantity: 10,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
       features: ["App rating boost", "Download increase", "User testimonials"],
       category: "review"
     },
@@ -96,7 +96,7 @@ const Clients = () => {
       title: "SEO Optimization Package",
       description: "Comprehensive SEO strategy to improve your search rankings",
       price: 4999,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
       features: ["Keyword research", "On-page SEO", "Backlink building", "Monthly reports"],
       category: "marketing"
     },
@@ -105,7 +105,7 @@ const Clients = () => {
       title: "Social Media Marketing",
       description: "Engage your audience across multiple social media platforms",
       price: 3499,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
       features: ["Profile setup", "Content calendar", "Community management", "Analytics"],
       category: "marketing"
     },
@@ -114,7 +114,7 @@ const Clients = () => {
       title: "Email Marketing Campaign",
       description: "Connect directly with your customers through strategic email campaigns",
       price: 3999,
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
       features: ["Template design", "Audience segmentation", "A/B testing", "Campaign analytics"],
       category: "marketing"
     }
@@ -191,17 +191,28 @@ const Clients = () => {
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-brand-blue/10 to-brand-purple/10 py-12">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Digital Marketing Solutions for Your Business</h1>
-            <p className="text-lg text-gray-700 mb-6 max-w-3xl">
-              Enhance your online presence with our comprehensive suite of digital marketing services and authentic reviews.
-            </p>
-            <div className="flex space-x-4">
-              <Button onClick={() => document.getElementById("review-services")?.scrollIntoView({ behavior: "smooth" })}>
-                Review Services
-              </Button>
-              <Button variant="outline" onClick={() => document.getElementById("marketing-services")?.scrollIntoView({ behavior: "smooth" })}>
-                Marketing Services
-              </Button>
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="md:w-1/2">
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">Digital Marketing Solutions for Your Business</h1>
+                <p className="text-lg text-gray-700 mb-6 max-w-3xl">
+                  Enhance your online presence with our comprehensive suite of digital marketing services and authentic reviews.
+                </p>
+                <div className="flex space-x-4">
+                  <Button onClick={() => document.getElementById("review-services")?.scrollIntoView({ behavior: "smooth" })}>
+                    Review Services
+                  </Button>
+                  <Button variant="outline" onClick={() => document.getElementById("marketing-services")?.scrollIntoView({ behavior: "smooth" })}>
+                    Marketing Services
+                  </Button>
+                </div>
+              </div>
+              <div className="md:w-1/2">
+                <img 
+                  src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6" 
+                  alt="Digital Marketing Solutions"
+                  className="rounded-lg shadow-lg w-full h-auto"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -219,7 +230,7 @@ const Clients = () => {
                       <img
                         src={service.image}
                         alt={service.title}
-                        className="h-32 w-auto object-contain"
+                        className="h-full w-full object-cover"
                       />
                     </div>
                     <CardHeader>
@@ -277,7 +288,7 @@ const Clients = () => {
                       <img
                         src={service.image}
                         alt={service.title}
-                        className="h-32 w-auto object-contain"
+                        className="h-full w-full object-cover"
                       />
                     </div>
                     <CardHeader>

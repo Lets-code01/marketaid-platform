@@ -46,7 +46,6 @@ const SignIn = () => {
                 footerActionLink: "text-brand-blue hover:text-blue-600 font-medium"
               }
             }}
-            redirectUrl="/dashboard"
             afterSignInUrl="/dashboard"
           />
           
