@@ -4,12 +4,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCLsqpuK2Tg3zF7kGHj_Q3s8wYM4NZhMOQ",
+  apiKey: "AIzaSyAtX4pqydkn7X1vUyB0tfh8bD0B9yw_xvU",
   authDomain: "digi-sanchaar.firebaseapp.com",
   projectId: "digi-sanchaar",
-  storageBucket: "digi-sanchaar.appspot.com",
-  messagingSenderId: "1054975432528",
-  appId: "1:1054975432528:web:12f0e6f5c91ca4e4b6d7c8"
+  storageBucket: "digi-sanchaar.firebasestorage.app",
+  messagingSenderId: "287545941306",
+  appId: "1:287545941306:web:d8dd85cf0586fd32c98403",
+  measurementId: "G-YVXVH3EEL9"
 };
 
 // Initialize Firebase
