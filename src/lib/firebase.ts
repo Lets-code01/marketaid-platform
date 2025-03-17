@@ -4,7 +4,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC5CzsEPgUlZn-9U-dn9ZmxXZxcjXJMwSA",
+  apiKey: "AIzaSyCLsqpuK2Tg3zF7kGHj_Q3s8wYM4NZhMOQ",
   authDomain: "digi-sanchaar.firebaseapp.com",
   projectId: "digi-sanchaar",
   storageBucket: "digi-sanchaar.appspot.com",
