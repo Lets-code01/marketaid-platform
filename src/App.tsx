@@ -4,7 +4,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import SignUp from "./pages/Auth/SignUp";
 import SignIn from "./pages/Auth/SignIn";
@@ -37,36 +41,56 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          {/* Add redirect routes for the URLs without hyphens */}
-          <Route path="/signup" element={<Navigate to="/sign-up" replace />} />
-          <Route path="/signin" element={<Navigate to="/sign-in" replace />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/students" element={<Students />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/contact" element={<ContactUs />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/pricing/basic" element={<PricingBasic />} />
-          <Route path="/pricing/standard" element={<PricingStandard />} />
-          <Route path="/pricing/premium" element={<PricingPremium />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/google-reviews" element={<GoogleMapReviews />} />
-          <Route path="/services/justdial-reviews" element={<JustDialReviews />} />
-          <Route path="/services/practo-reviews" element={<PractoReviews />} />
-          <Route path="/services/amazon-reviews" element={<AmazonReviews />} />
-          <Route path="/services/playstore-reviews" element={<PlayStoreReviews />} />
-          <Route path="/services/seo-optimization" element={<SeoOptimization />} />
-          <Route path="/services/social-media-marketing" element={<SocialMediaMarketing />} />
-          <Route path="/services/email-marketing" element={<EmailMarketing />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            {/* Alternate routes with hyphens */}
+            <Route path="/sign-up" element={<Navigate to="/signup" replace />} />
+            <Route path="/sign-in" element={<Navigate to="/signin" replace />} />
+            
+            {/* Protected Routes */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/checkout" element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            } />
+            <Route path="/payment" element={
+              <ProtectedRoute>
+                <Payment />
+              </ProtectedRoute>
+            } />
+            
+            {/* Public Routes */}
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/students" element={<Students />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/pricing/basic" element={<PricingBasic />} />
+            <Route path="/pricing/standard" element={<PricingStandard />} />
+            <Route path="/pricing/premium" element={<PricingPremium />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/google-reviews" element={<GoogleMapReviews />} />
+            <Route path="/services/justdial-reviews" element={<JustDialReviews />} />
+            <Route path="/services/practo-reviews" element={<PractoReviews />} />
+            <Route path="/services/amazon-reviews" element={<AmazonReviews />} />
+            <Route path="/services/playstore-reviews" element={<PlayStoreReviews />} />
+            <Route path="/services/seo-optimization" element={<SeoOptimization />} />
+            <Route path="/services/social-media-marketing" element={<SocialMediaMarketing />} />
+            <Route path="/services/email-marketing" element={<EmailMarketing />} />
+            
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

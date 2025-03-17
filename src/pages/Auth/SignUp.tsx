@@ -1,21 +1,70 @@
 
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { SignUp as ClerkSignUp } from "@clerk/clerk-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/contexts/AuthContext";
+import { FcGoogle } from "react-icons/fc";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+const signUpSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string(),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
+  const { signUp, signInWithGoogle } = useAuth();
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignUpSuccess = () => {
-    toast({
-      title: "Account created",
-      description: "You've successfully signed up!",
-    });
-    navigate("/dashboard");
+  const form = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onSubmit = async (values: SignUpFormValues) => {
+    setIsLoading(true);
+    try {
+      await signUp(values.email, values.password);
+    } catch (error) {
+      console.error("Sign up error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error("Google sign in error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -28,31 +77,86 @@ const SignUp = () => {
             <p className="text-gray-600 mt-2">Create your account</p>
           </div>
           
-          <ClerkSignUp 
-            path="/sign-up"
-            routing="path"
-            signInUrl="/sign-in"
-            appearance={{
-              elements: {
-                rootBox: "mx-auto w-full",
-                card: "shadow-md rounded-lg bg-white p-6",
-                headerTitle: "text-xl font-bold text-center",
-                headerSubtitle: "text-sm text-gray-500 text-center",
-                socialButtonsBlockButton: "border rounded-md p-2 text-center flex justify-center items-center gap-2 w-full transition hover:bg-gray-50",
-                formFieldLabel: "block text-sm font-medium text-gray-700 mb-1",
-                formFieldInput: "w-full p-2 border border-gray-300 rounded-md",
-                formButtonPrimary: "mt-4 w-full bg-brand-blue hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors",
-                footerActionText: "text-sm",
-                footerActionLink: "text-brand-blue hover:text-blue-600 font-medium"
-              }
-            }}
-            afterSignUpUrl="/dashboard"
-          />
+          <div className="bg-white p-8 shadow-md rounded-lg">
+            <Button 
+              variant="outline" 
+              type="button" 
+              className="w-full mb-6 flex items-center justify-center gap-2"
+              onClick={handleGoogleSignIn}
+              disabled={isLoading}
+            >
+              <FcGoogle className="h-5 w-5" />
+              Sign up with Google
+            </Button>
+            
+            <div className="relative mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+            
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="you@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="••••••" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="••••••" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-brand-blue hover:bg-blue-600"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating account..." : "Create account"}
+                </Button>
+              </form>
+            </Form>
+          </div>
           
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <Link to="/sign-in" className="text-brand-blue hover:underline font-medium">
+              <Link to="/signin" className="text-brand-blue hover:underline font-medium">
                 Sign in
               </Link>
             </p>
