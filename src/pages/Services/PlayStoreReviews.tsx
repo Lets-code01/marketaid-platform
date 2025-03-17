@@ -24,7 +24,7 @@ const PlayStoreReviews = () => {
       features={features}
       benefits={benefits}
       pricing="₹40 per review (minimum 10 reviews)"
-      image="/placeholder.svg"
+      image="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" // Technology-related image
     >
       <section className="py-16">
         <div className="container mx-auto px-4">

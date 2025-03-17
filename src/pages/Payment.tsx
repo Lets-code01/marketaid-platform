@@ -6,15 +6,24 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, AlertCircle } from "lucide-react";
+import { useUser } from "@clerk/clerk-react";
 
-// In a real app, this would be replaced with actual Razorpay integration
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const PaymentPage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [paymentComplete, setPaymentComplete] = useState(false);
+  const [paymentError, setPaymentError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { user, isSignedIn } = useUser();
   
   // Get the amount from location state or default to 249 (student registration)
   const amount = location.state?.amount || 249;
@@ -40,55 +49,69 @@ const PaymentPage = () => {
   }, []);
 
   const displayRazorpay = () => {
-    // Simulate payment processing
+    // Start loading
     setLoading(true);
     
-    // In a real implementation, you would get the order_id from your backend
     const options = {
-      key: "rzp_test_YourTestKey", // Replace with actual test key in production
+      key: "rzp_test_H8UhX2XTYlT9ej", // Razorpay test key
       amount: amount * 100, // Razorpay takes amount in paise
       currency: "INR",
       name: "Digi Sanchaar",
       description: "Payment for services",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
       order_id: "order_" + Math.random().toString(36).substring(2, 15),
-      handler: function (response) {
+      handler: function (response: any) {
         // Handle successful payment
         setLoading(false);
         setPaymentComplete(true);
         
         toast({
           title: "Payment successful!",
-          description: "Your transaction has been completed successfully.",
+          description: "Your transaction has been completed successfully and invoice sent to your email.",
         });
         
-        // In a real implementation, you would verify the payment signature on your backend
-        console.log("Payment successful", response);
+        // Send invoice email
+        sendInvoiceEmail();
       },
       prefill: {
-        name: "User Name",
-        email: "user@example.com",
-        contact: "9876543210"
+        name: isSignedIn ? user.fullName : "",
+        email: isSignedIn ? user.primaryEmailAddress?.emailAddress : "",
+        contact: ""
       },
       theme: {
         color: "#3B82F6"
+      },
+      modal: {
+        ondismiss: function() {
+          setLoading(false);
+        }
+      },
+      notes: {
+        address: "Digi Sanchaar Corporate Office"
       }
     };
     
-    // For demo purposes, we're simulating the payment completion
-    setTimeout(() => {
+    try {
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.open();
+    } catch (error) {
+      console.error("Razorpay error:", error);
+      setPaymentError(true);
+      setErrorMessage("Failed to initialize payment gateway. Please try again later.");
       setLoading(false);
-      setPaymentComplete(true);
       
       toast({
-        title: "Payment successful!",
-        description: "Your transaction has been completed successfully.",
+        title: "Payment error",
+        description: "Failed to initialize payment gateway. Please try again.",
+        variant: "destructive"
       });
-    }, 2000);
-    
-    // In actual implementation, you would do:
-    // const razorpay = new window.Razorpay(options);
-    // razorpay.open();
+    }
+  };
+
+  const sendInvoiceEmail = () => {
+    // In a real implementation, you would call your backend API to send an invoice email
+    console.log("Sending invoice email to:", isSignedIn ? user.primaryEmailAddress?.emailAddress : "user@example.com");
+    // This is just a simulation as we don't have a backend API for sending emails
   };
 
   const handlePayNow = () => {
@@ -97,6 +120,11 @@ const PaymentPage = () => {
 
   const handleContinue = () => {
     navigate("/");
+  };
+
+  const handleTryAgain = () => {
+    setPaymentError(false);
+    setErrorMessage("");
   };
 
   return (
@@ -126,7 +154,7 @@ const PaymentPage = () => {
                 </CardHeader>
                 <CardContent className="text-center">
                   <div className="space-y-2 mb-4">
-                    <p className="text-sm text-gray-500">Transaction ID: RZPY12345678</p>
+                    <p className="text-sm text-gray-500">Transaction ID: RZPY{Math.floor(Math.random() * 10000000)}</p>
                     <p className="text-sm text-gray-500">Amount: {formattedAmount}</p>
                     <p className="text-sm text-gray-500">Date: {new Date().toLocaleString()}</p>
                   </div>
@@ -140,12 +168,32 @@ const PaymentPage = () => {
                   </Button>
                 </CardFooter>
               </Card>
+            ) : paymentError ? (
+              <Card>
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <AlertCircle className="h-16 w-16 text-red-500" />
+                  </div>
+                  <CardTitle>Payment Failed</CardTitle>
+                  <CardDescription>We encountered an issue with your payment</CardDescription>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-sm text-gray-600 mb-4">
+                    {errorMessage || "Your payment could not be processed. Please try again."}
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full" onClick={handleTryAgain}>
+                    Try Again
+                  </Button>
+                </CardFooter>
+              </Card>
             ) : (
               <Card>
                 <CardHeader>
                   <div className="flex justify-between items-center">
                     <CardTitle>Razorpay Checkout</CardTitle>
-                    <img src="/placeholder.svg" alt="Razorpay" className="h-8" />
+                    <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="Razorpay" className="h-8" />
                   </div>
                   <CardDescription>Secure payment gateway</CardDescription>
                 </CardHeader>

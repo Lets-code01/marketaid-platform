@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignUp as ClerkSignUp } from "@clerk/clerk-react";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/layout/Navbar";
@@ -8,12 +8,14 @@ import Footer from "@/components/layout/Footer";
 
 const SignUp = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSignUpSuccess = () => {
     toast({
       title: "Account created",
       description: "You've successfully signed up!",
     });
+    navigate("/dashboard");
   };
 
   return (

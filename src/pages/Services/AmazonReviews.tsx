@@ -24,7 +24,7 @@ const AmazonReviews = () => {
       features={features}
       benefits={benefits}
       pricing="₹40 per review (minimum 10 reviews)"
-      image="/placeholder.svg"
+      image="https://images.unsplash.com/photo-1461749280684-dccba630e2f6" // E-commerce related image
     >
       <section className="py-16">
         <div className="container mx-auto px-4">

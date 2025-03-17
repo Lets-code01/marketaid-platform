@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,18 @@ import { useNavigate } from "react-router-dom";
 const Students = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    college: "",
+    reason: ""
+  });
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
+  };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,9 +69,9 @@ const Students = () => {
               </div>
               <div className="md:w-1/2">
                 <img 
-                  src="/placeholder.svg" 
+                  src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
                   alt="Students earning" 
-                  className="rounded-lg shadow-xl"
+                  className="rounded-lg shadow-xl w-full h-auto"
                 />
               </div>
             </div>
@@ -131,7 +144,9 @@ const Students = () => {
                     "I was skeptical at first, but after joining I'm able to earn ₹10,000 monthly working part-time while completing my studies."
                   </p>
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 overflow-hidden">
+                      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="Student" className="w-full h-full object-cover" />
+                    </div>
                     <div>
                       <p className="font-medium">Ananya Singh</p>
                       <p className="text-sm text-gray-500">BBA Student, Delhi</p>
@@ -151,7 +166,9 @@ const Students = () => {
                     "This platform has allowed me to pay my college fees without depending on my parents. The team is very supportive."
                   </p>
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 overflow-hidden">
+                      <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" alt="Student" className="w-full h-full object-cover" />
+                    </div>
                     <div>
                       <p className="font-medium">Rohan Mehta</p>
                       <p className="text-sm text-gray-500">Engineering Student, Mumbai</p>
@@ -171,7 +188,9 @@ const Students = () => {
                     "I'm a housewife pursuing my degree, and this opportunity has given me financial independence while managing my studies."
                   </p>
                   <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                    <div className="w-10 h-10 bg-gray-300 rounded-full mr-3 overflow-hidden">
+                      <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6" alt="Student" className="w-full h-full object-cover" />
+                    </div>
                     <div>
                       <p className="font-medium">Divya Sharma</p>
                       <p className="text-sm text-gray-500">B.A. Student, Jaipur</p>
@@ -200,22 +219,47 @@ const Students = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div className="space-y-2">
                         <Label htmlFor="name">Full Name</Label>
-                        <Input id="name" placeholder="Enter your full name" required />
+                        <Input 
+                          id="name" 
+                          placeholder="Enter your full name" 
+                          value={formData.name}
+                          onChange={handleChange}
+                          required 
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="Enter your email" required />
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          placeholder="Enter your email" 
+                          value={formData.email}
+                          onChange={handleChange}
+                          required 
+                        />
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
-                        <Input id="phone" placeholder="Enter your phone number" required />
+                        <Input 
+                          id="phone" 
+                          placeholder="Enter your phone number" 
+                          value={formData.phone}
+                          onChange={handleChange}
+                          required 
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="college">College/University</Label>
-                        <Input id="college" placeholder="Enter your college name" required />
+                        <Input 
+                          id="college" 
+                          placeholder="Enter your college name" 
+                          value={formData.college}
+                          onChange={handleChange}
+                          required 
+                        />
                       </div>
                     </div>
                     
@@ -225,6 +269,8 @@ const Students = () => {
                         id="reason" 
                         placeholder="Tell us why you're interested in joining our platform"
                         className="min-h-[100px]"
+                        value={formData.reason}
+                        onChange={handleChange}
                         required
                       />
                     </div>

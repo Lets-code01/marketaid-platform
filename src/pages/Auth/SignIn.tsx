@@ -15,6 +15,7 @@ const SignIn = () => {
       title: "Sign in successful",
       description: "You've successfully signed in!",
     });
+    navigate("/dashboard");
   };
 
   return (
