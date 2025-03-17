@@ -28,6 +28,8 @@ const SignIn = () => {
           </div>
           
           <ClerkSignIn 
+            path="/sign-in"
+            routing="path"
             signUpUrl="/sign-up"
             appearance={{
               elements: {
@@ -43,9 +45,8 @@ const SignIn = () => {
                 footerActionLink: "text-brand-blue hover:text-blue-600 font-medium"
               }
             }}
-            redirectUrl="/"
-            afterSignInUrl="/"
-            routing="path"
+            redirectUrl="/dashboard"
+            afterSignInUrl="/dashboard"
           />
           
           <div className="mt-6 text-center">

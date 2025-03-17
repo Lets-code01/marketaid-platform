@@ -27,6 +27,8 @@ const SignUp = () => {
           </div>
           
           <ClerkSignUp 
+            path="/sign-up"
+            routing="path"
             signInUrl="/sign-in"
             appearance={{
               elements: {
@@ -42,9 +44,8 @@ const SignUp = () => {
                 footerActionLink: "text-brand-blue hover:text-blue-600 font-medium"
               }
             }}
-            redirectUrl="/"
-            afterSignUpUrl="/"
-            routing="path"
+            redirectUrl="/dashboard"
+            afterSignUpUrl="/dashboard"
           />
           
           <div className="mt-6 text-center">
